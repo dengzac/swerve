@@ -10,10 +10,16 @@ public:
 	void InitDefaultCommand() override;
 	std::vector<double> GetWheelPos();
 private:
+	const double PID_POS_P = 0;
+	const double PID_POS_I = 0;
+	const double PID_POS_D = 0;
+	const double PID_POS_F= 0;
 	std::unique_ptr<frc::Encoder> SpeedEncoders[4];
 	std::unique_ptr<frc::AnalogInput> PositionEncoders[4];
 	std::unique_ptr<frc::VictorSP> DriveVictors[4];
 	std::unique_ptr<frc::VictorSP> TurnVictors[4];
+	
+	std::unique_ptr<frc::PIDController> PositionPID[4];
 	
 	std::unique_ptr<AHRS> ahrs;
 };
