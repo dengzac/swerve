@@ -11,7 +11,7 @@ Drivetrain::Drivetrain() : Subsystem("Drivetrain") {
 		DriveVictors[i] = std::make_unique<frc::VictorSP> ( MOTOR_DRIVE[i] );
 		TurnVictors[i] = std::make_unique<frc::VictorSP> ( MOTOR_TURN[i] );
 		PositionPID[i] = std::make_unique<frc::PIDController> ( PID_POS_P, PID_POS_I, PID_POS_D, PID_POS_F, PositionEncoders[i].get(), TurnVictors[i].get() );
-		PositionPID[i]->SetInputRange(0, 360);
+		PositionPID[i]->SetInputRange(0, 5);
 		PositionPID[i]->SetOutputRange(-1, 1);
 		PositionPID[i]->SetContinuous(true);
 	}
