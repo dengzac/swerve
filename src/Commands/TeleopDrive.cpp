@@ -31,6 +31,7 @@ void TeleopDrive::Execute() {
 		}
 		frc::SmartDashboard::PutNumber("Setpoint" + std::to_string(i+1), setpoint);
 		frc::SmartDashboard::putBoolean("Reversed" + std::to_string(i+1), setpoint!=wheelAngles[i]);
+		CommandBase::drivetrain->PositionPID[i]->SetSetpoint(setpoint * 5.0/360.0); // Convert degrees to volts
 	}
 }
 
