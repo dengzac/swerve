@@ -16,6 +16,7 @@ private:
 	double wheelbase = 0;
 	double trackwidth = 0;
 	double diagonallength = sqrt(wheelbase*wheelbase + trackwidth*trackwidth)/2;
+	double MoveAngleToRange(double angle);
 };
 
 #endif  // TELEOP_DRIVE_H

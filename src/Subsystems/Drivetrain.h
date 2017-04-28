@@ -8,7 +8,7 @@ class Drivetrain: public Subsystem {
 public:
 	Drivetrain();
 	void InitDefaultCommand() override;
-
+	std::vector<double> GetWheelPos();
 private:
 	std::unique_ptr<frc::Encoder> SpeedEncoders[4];
 	std::unique_ptr<frc::AnalogInput> PositionEncoders[4];
