@@ -72,3 +72,8 @@ double TeleopDrive::MoveAngleToRange(double angle){
 	}
 	return angle;
 }
+
+double TeleopDrive::AngleDistance(double a, double b){
+	double PI = 3.14159265
+	return atan2(sin(a*PI/180.0 - b*PI/180.0), cos(a*PI/180.0 - b*PI/180.0));
+}
