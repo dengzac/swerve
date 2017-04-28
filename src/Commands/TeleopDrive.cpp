@@ -22,32 +22,15 @@ void TeleopDrive::Execute() {
 		frc::SmartDashboard::PutNumber("Velocity" + std::to_string(i+1), wheelVelocities[i]);
 		frc::SmartDashboard::PutNumber("Angle" + std::to_string(i+1), wheelAngles[i]);
 		frc::SmartDashboard::PutNumber("Position" + std::to_string(i+1), wheelPos[i]);
-		double directDist, flipDist;
-		double setpoint1, setpoint2, setpoint;
-		bool reversed = false;
+		
 		wheelAngles[i] = MoveAngleToRange(-wheelAngles[i]);
-		if (wheelPos[i] > wheelAngles[i]){
-			directDist = wheelPos[i] - wheelAngles[i];
-			flipDist = MoveAngleToRange(wheelAngles[i]+180) - wheelPos[i];
-			setpoint1 = wheelAngles[i];
-			setpoint2 = MoveAngleToRange(wheelAngles[i]+180);
-		}
-		else {
-			directDist = wheelAngles[i] - wheelPos[i];
-			flipDist = wheelPos[i] - MoveAngleToRange(wheelAngles+180);
-			setpoint1 = wheelAngles[i];
-			setpoint2 = MoveAngleToRange(wheelAngles[i]+180);
-		}
-		if (directDist < flipDist){
-			setpoint = setpoint1;
-			reversed = false;
-		}
-		else {
-			setpoint = setpoint2;
-			reversed = true;
+		double dist = AngleDistance(wheelPos[i], wheelAngles[i]);
+		double setpoint = MoveAngleToRange(wheelPos[i] + dist);
+		if (setpoint!=wheelAngles[i]){
+			wheelVelocities[i]*=-1; // If closest point is not in correct direction, reverse
 		}
 		frc::SmartDashboard::PutNumber("Setpoint" + std::to_string(i+1), setpoint);
-		frc::SmartDashboard::putBoolean("Reversed" + std::to_string(i+1), reversed);
+		frc::SmartDashboard::putBoolean("Reversed" + std::to_string(i+1), setpoint!=wheelAngles[i]);
 	}
 }
 
@@ -74,6 +57,6 @@ double TeleopDrive::MoveAngleToRange(double angle){
 }
 
 double TeleopDrive::AngleDistance(double a, double b){
-	double PI = 3.14159265
-	return atan2(sin(a*PI/180.0 - b*PI/180.0), cos(a*PI/180.0 - b*PI/180.0));
+	double PI = 3.14159265;
+	return atan(sin(a*PI/180.0 - b*PI/180.0)/ cos(a*PI/180.0 - b*PI/180.0))*180.0/PI;
 }
