@@ -18,20 +18,27 @@ void TeleopDrive::Execute() {
 	//double wheelVectors[4][2] = {{velocities[1], velocities[2]}, {velocities[1], velocities[3]}, {velocities[0], velocities[3]}, {velocities[0], velocities[2]}};
 	double wheelVelocities[4] = {sqrt(velocities[1]*velocities[1] + velocities[2]*velocities[2]), sqrt(velocities[1]*velocities[1] + velocities[3]*velocities[3]), sqrt(velocities[0]*velocities[0] + velocities[3]*velocities[3]), sqrt(velocities[0]*velocities[0] + velocities[2]*velocities[2])};
 	double wheelAngles[4] = {atan2(velocities[1], velocities[2])*180/PI, atan2(velocities[1], velocities[3])*180/PI, atan2(velocities[0], velocities[3])*180/PI, atan2(velocities[0], velocities[2])*180/PI};
+	double setpoints[4], largest = -1;
 	for (int i = 0; i<4;i++){
 		frc::SmartDashboard::PutNumber("Velocity" + std::to_string(i+1), wheelVelocities[i]);
 		frc::SmartDashboard::PutNumber("Angle" + std::to_string(i+1), wheelAngles[i]);
 		frc::SmartDashboard::PutNumber("Position" + std::to_string(i+1), wheelPos[i]);
 		
-		wheelAngles[i] = MoveAngleToRange(-wheelAngles[i]);
-		double dist = AngleDistance(wheelPos[i], wheelAngles[i]);
-		double setpoint = MoveAngleToRange(wheelPos[i] + dist);
-		if (setpoint!=wheelAngles[i]){
+		wheelAngles[i] = MoveAngleToRange(-wheelAngles[i] + 90);
+		double dist = -AngleDistance(wheelPos[i], wheelAngles[i]);
+		setpoints[i] = MoveAngleToRange(wheelPos[i] + dist);
+		if (std::fabs(setpoints[i]-wheelAngles[i]) > 1){
 			wheelVelocities[i]*=-1; // If closest point is not in correct direction, reverse
 		}
-		frc::SmartDashboard::PutNumber("Setpoint" + std::to_string(i+1), setpoint);
-		frc::SmartDashboard::PutBoolean("Reversed" + std::to_string(i+1), setpoint!=wheelAngles[i]);
-		CommandBase::drivetrain->PositionPID[i]->SetSetpoint(setpoint * 5.0/360.0); // Convert degrees to volts
+		largest = std::max(largest, std::fabs(wheelVelocities[i]));
+		frc::SmartDashboard::PutNumber("Setpoint" + std::to_string(i+1), setpoints[i]);
+		frc::SmartDashboard::PutBoolean("Reversed" + std::to_string(i+1), wheelVelocities[i] < 0);
+	}
+	for (int i = 0; i<4;i++){
+		if (largest>1){
+			wheelVelocities[i]/=largest;
+		}
+		CommandBase::drivetrain->PositionPID[i]->SetSetpoint(setpoints[i] * 5.0/360.0); // Convert degrees to volts
 	}
 }
 
