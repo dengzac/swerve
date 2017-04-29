@@ -15,8 +15,8 @@ void TeleopDrive::Execute() {
 	std::vector<double> wheelPos = CommandBase::drivetrain->GetWheelPos();
 	double velocities[] = {translateVector.first - rotate*wheelbase/2.0, translateVector.first + rotate*wheelbase/2.0,
 						   translateVector.second - rotate*trackwidth/2.0, translateVector.second + rotate*trackwidth/2.0};
-	double wheelVectors[4][2] = {{velocities[1], velocities[2]}, {velocities[1], velocities[3]}, {velocities[0], velocities[3]}, {velocities[0], velocities[2]}};
-	double wheelVelocities[4] = {sqrt(velocities[1]*velocities[1] + velocities[2]*velocities[2]), {sqrt(velocities[1]*velocities[1] + velocities[3]*velocities[3])}, {sqrt(velocities[0]*velocities[0] + velocities[3]*velocities[3])}, {sqrt(velocities[0]*velocities[0] + velocities[2]*velocities[2])}};
+	//double wheelVectors[4][2] = {{velocities[1], velocities[2]}, {velocities[1], velocities[3]}, {velocities[0], velocities[3]}, {velocities[0], velocities[2]}};
+	double wheelVelocities[4] = {sqrt(velocities[1]*velocities[1] + velocities[2]*velocities[2]), sqrt(velocities[1]*velocities[1] + velocities[3]*velocities[3]), sqrt(velocities[0]*velocities[0] + velocities[3]*velocities[3]), sqrt(velocities[0]*velocities[0] + velocities[2]*velocities[2])};
 	double wheelAngles[4] = {atan2(velocities[1], velocities[2])*180/PI, atan2(velocities[1], velocities[3])*180/PI, atan2(velocities[0], velocities[3])*180/PI, atan2(velocities[0], velocities[2])*180/PI};
 	for (int i = 0; i<4;i++){
 		frc::SmartDashboard::PutNumber("Velocity" + std::to_string(i+1), wheelVelocities[i]);
@@ -30,7 +30,7 @@ void TeleopDrive::Execute() {
 			wheelVelocities[i]*=-1; // If closest point is not in correct direction, reverse
 		}
 		frc::SmartDashboard::PutNumber("Setpoint" + std::to_string(i+1), setpoint);
-		frc::SmartDashboard::putBoolean("Reversed" + std::to_string(i+1), setpoint!=wheelAngles[i]);
+		frc::SmartDashboard::PutBoolean("Reversed" + std::to_string(i+1), setpoint!=wheelAngles[i]);
 		CommandBase::drivetrain->PositionPID[i]->SetSetpoint(setpoint * 5.0/360.0); // Convert degrees to volts
 	}
 }

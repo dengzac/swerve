@@ -24,7 +24,7 @@ void Drivetrain::InitDefaultCommand() {
 std::vector<double> Drivetrain::GetWheelPos(){
 	std::vector<double> positions;
 	for (int i =0; i<4;i++){
-		positions.push_back(PositionEncoders[num]->GetVoltage()*(360.0/5.0));
+		positions.push_back(PositionEncoders[i]->GetVoltage()*(360.0/5.0));
 	}
 	return positions;
 }

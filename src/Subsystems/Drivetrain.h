@@ -9,6 +9,7 @@ public:
 	Drivetrain();
 	void InitDefaultCommand() override;
 	std::vector<double> GetWheelPos();
+	std::unique_ptr<frc::PIDController> PositionPID[4];
 private:
 	const double PID_POS_P = 0;
 	const double PID_POS_I = 0;
@@ -18,8 +19,6 @@ private:
 	std::unique_ptr<frc::AnalogInput> PositionEncoders[4];
 	std::unique_ptr<frc::VictorSP> DriveVictors[4];
 	std::unique_ptr<frc::VictorSP> TurnVictors[4];
-	
-	std::unique_ptr<frc::PIDController> PositionPID[4];
 	
 	std::unique_ptr<AHRS> ahrs;
 };
