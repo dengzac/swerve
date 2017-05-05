@@ -29,3 +29,7 @@ std::vector<double> Drivetrain::GetWheelPos(){
 	return positions;
 }
 
+double Drivetrain::GetAngle(){
+	return ahrs->GetYaw();
+}
+

@@ -10,6 +10,7 @@ public:
 	void InitDefaultCommand() override;
 	std::vector<double> GetWheelPos();
 	std::unique_ptr<frc::PIDController> PositionPID[4];
+	double GetAngle();
 private:
 	const double PID_POS_P = 0;
 	const double PID_POS_I = 0;

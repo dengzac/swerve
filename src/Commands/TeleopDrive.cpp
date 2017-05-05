@@ -10,7 +10,10 @@ void TeleopDrive::Initialize() {
 
 void TeleopDrive::Execute() {
 	double PI = 3.14159265359;
-	std::pair<double, double> translateVector = CommandBase::oi->GetLeftJoystick();
+	std::pair<double, double> joystickPos = CommandBase::oi->GetLeftJoystick();
+	double drivetrainangle = CommandBase::drivetrain->GetAngle() * PI/180.0;
+	std::pair<double, double> translateVector = std::make_pair(joystickPos.first*cos(drivetrainangle) - joystickPos.second*sin(drivetrainangle),
+															   joystickPos.first*sin(drivetrainangle) + joystickPos.second*cos(drivetrainangle));
 	double rotate = CommandBase::oi->GetRightJoystick().first;
 	std::vector<double> wheelPos = CommandBase::drivetrain->GetWheelPos();
 	double velocities[] = {translateVector.first - rotate*wheelbase/2.0, translateVector.first + rotate*wheelbase/2.0,
