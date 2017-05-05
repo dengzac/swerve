@@ -8,7 +8,7 @@ OI::OI() {
 }
 
 std::pair<double, double> OI::GetLeftJoystick(){
-	return std::make_pair(leftStick->GetX(), leftStick->GetY());
+	return std::make_pair(leftStick->GetX(), -leftStick->GetY());
 }
 
 std::pair<double, double> OI::GetRightJoystick(){
