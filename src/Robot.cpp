@@ -13,7 +13,7 @@
 class Robot: public IterativeRobot {
 public:
 	void RobotInit() override {
-
+		CommandBase::Init();
 	}
 
 

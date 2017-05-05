@@ -13,7 +13,7 @@ class CommandBase: public Command {
 public:
 	CommandBase(const std::string& name);
 	CommandBase() = default;
-	void Init();
+	static void Init();
 	
 	// Create a single static instance of all of your subsystems
 	static std::unique_ptr<Drivetrain> drivetrain;
